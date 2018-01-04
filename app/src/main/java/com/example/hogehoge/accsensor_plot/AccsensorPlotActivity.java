@@ -97,9 +97,6 @@ public class AccsensorPlotActivity extends AppCompatActivity implements SensorEv
         dataset = new LineDataSet(entries, "Xaxis");
         dataset.setColor(Color.BLUE);
 
-        //データセットの先頭を削除
-        dataset.removeFirst()
-
         // LineDataSsetを使ってLineDataを初期化
         LineData lineData = new LineData(dataset);
 
@@ -142,6 +139,7 @@ public class AccsensorPlotActivity extends AppCompatActivity implements SensorEv
         for(int i = 0; i < xdata.size(); i++){
             entries.add(new Entry(xdata.get(i), ydata.get(i)));
         }
+        // Test
 
         dataset = new LineDataSet(entries, "Xaxis");
         dataset.setDrawCircles(false);
