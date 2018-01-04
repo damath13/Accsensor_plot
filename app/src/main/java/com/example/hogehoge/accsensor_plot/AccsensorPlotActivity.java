@@ -63,7 +63,7 @@ public class AccsensorPlotActivity extends AppCompatActivity implements SensorEv
         // センサ値取得のタイマースタート
         timerSet();
         // サンプリングレート計算のための開始時間取得
-        timeStart = System.currentTimeMillis();
+        timeStart = System.nanoTime();
     }
 
     // Chartの初期化
@@ -96,6 +96,9 @@ public class AccsensorPlotActivity extends AppCompatActivity implements SensorEv
         // グラフのラインになるLineDataSetを作成
         dataset = new LineDataSet(entries, "Xaxis");
         dataset.setColor(Color.BLUE);
+
+        //データセットの先頭を削除
+        dataset.removeFirst();
 
         // LineDataSsetを使ってLineDataを初期化
         LineData lineData = new LineData(dataset);
@@ -134,12 +137,12 @@ public class AccsensorPlotActivity extends AppCompatActivity implements SensorEv
         ydata.remove(0);
         ydata.add(accValue[0]);
 
-        // Entry型のListへ代入
+        // Entry型のListへ代入----
         List<Entry> entries = new ArrayList<>();
         for(int i = 0; i < xdata.size(); i++){
             entries.add(new Entry(xdata.get(i), ydata.get(i)));
         }
-        // Test
+        //---ここまでたった2ms…
 
         dataset = new LineDataSet(entries, "Xaxis");
         dataset.setDrawCircles(false);
@@ -204,15 +207,15 @@ public class AccsensorPlotActivity extends AppCompatActivity implements SensorEv
     }
 
     // Timer
-        private void timerSet(){
+    private void timerSet(){
         runnable = new Runnable() {
             @Override
             public void run(){
 
                 // 実サンプリングレートの計算
-                long actSamplingtime = System.currentTimeMillis() - timeStart;
-                actSamplingRate = 1 / ((float)actSamplingtime / 1000);
-                timeStart = System.currentTimeMillis();
+                long actSamplingtime = System.nanoTime() - timeStart;
+                actSamplingRate = 1 / ((float)actSamplingtime / (float)Math.pow(10, 9));
+                timeStart = System.nanoTime();
 
                 // グラフの更新
                 updateChart();
